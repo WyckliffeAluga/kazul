@@ -66,7 +66,7 @@ describe('Blockchain', () => {
           });
 
           blockchain.chain.push(badBlock);
-          expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
+          expect(Blockchain.isValidChain(blockchain.chain)).toBe(fa);
         });
       });
 
