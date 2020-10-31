@@ -1,6 +1,6 @@
 const Blockchain = require('./index') ;
 const Block = require('./block');
-const cryptoHash = require('../util/crypto-hash');
+const {cryptoHash} = require('../util');
 
 describe('Blockchain', () => {
   let blockchain , newChain , originalChain;
@@ -19,7 +19,7 @@ describe('Blockchain', () => {
   });
 
   it('adds a new block to the chain', () => {
-    const newData = 'foo bar';
+    const newData = 'Wyckliffe';
     blockchain.addBlock({ data: newData});
     expect(blockchain.chain[blockchain.chain.length-1].data).toEqual(newData);
   });
