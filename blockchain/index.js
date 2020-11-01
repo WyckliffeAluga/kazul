@@ -19,7 +19,7 @@ class Blockchain {
     this.chain.push(newBlock);
   }
 
-  replaceChain(chain, onSuccess) {
+  replaceChain(chain, validateTransactions, onSuccess) {
     if (chain.length <= this.chain.length) {
       console.error('The incoming chain must be longer');
       return ;
@@ -28,6 +28,12 @@ class Blockchain {
       console.error('The incoming chain must be valid');
       return;
     }
+
+    if(validateTransactions && !this.validTransactionData({ chain })) {
+      console.error('The incoming chain has invalid transaction data');
+      return;
+    }
+
     if (onSuccess) onSuccess();
     console.log('replacing chain with', chain);
     this.chain = chain;
@@ -35,9 +41,9 @@ class Blockchain {
 
   validTransactionData({ chain }) {
 
-    for (let i=1; i<chain.length; i++){
-
+    for (let i=1 ; i<chain.length; i++){
       const block = chain[i];
+      const transactionSet = new Set();
       let rewardTransactionCount = 0 ;
 
       for (let transaction  of block.data) {
@@ -67,6 +73,13 @@ class Blockchain {
           if (transaction.input.amount !== trueBalance ) {
             console.error('This is an invalid input amount');
             return false;
+          }
+
+          if (transactionSet.has(transaction)) {
+            console.error('An identical transaction appears more than once');
+            return  false;
+          } else {
+            transactionSet.add(transaction);
           }
         }
       }
