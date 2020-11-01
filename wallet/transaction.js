@@ -9,7 +9,7 @@ class Transaction {
     this.input = this.createInput({senderWallet, outputMap:this.outputMap});
   }
 
-  createOutputMap({ senderWallet, recipient, amount}) {
+  createOutputMap({ senderWallet, recipient, amount }) {
     const outputMap = {};
 
     outputMap[recipient] = amount;
