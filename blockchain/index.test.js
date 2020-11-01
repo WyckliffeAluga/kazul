@@ -180,7 +180,7 @@ describe('Blockchain', () => {
       });
 
       describe('and the transaction  is a reward transaction', () => {
-          it('returns false', () => {
+          it('returns false and logs an error', () => {
             rewardTransaction.outputMap[wallet.publicKey] = 9999999999;
             newChain.addBlock({ data: [transaction, rewardTransaction]});
             expect(blockchain.validTransactionData({ chain: newChain.chain })).toBe(false);
@@ -190,7 +190,27 @@ describe('Blockchain', () => {
     });
 
     describe('and the transaction data has at least 1 malformed input', () => {
-      it('returns false', () => {});
+      it('returns false', () => {
+        wallet.balance  = 10000;
+        const evilOutputMap = {
+          [wallet.publicKey]: 9900,
+          fooRecipient: 100
+        };
+
+        const evilTransaction = {
+          input: {
+            timestamp: Date.now(),
+            amount: wallet.balance,
+            address: wallet.publicKey,
+            signature: wallet.sign(evilOutputMap)
+          },
+          outputMap: evilOutputMap
+        }
+
+        newChain.addBlock({ data: [evilTransaction, rewardTransaction ]});
+        expect(blockchain.validTransactionData({ chain: newChain.chain })).toBe(false);
+        expect(errorMock).toHaveBeenCalled();
+      });
     });
 
     describe('and a block contains multiple identical transactions', () => {
