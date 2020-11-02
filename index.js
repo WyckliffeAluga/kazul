@@ -154,7 +154,7 @@ if (process.env.GENERATE_PEER_PORT === 'true') {
 }
 
 const PORT = process.env.PORT || PEER_PORT || DEFAULT_PORT;
-app.listen(PORT, () => {
+app.listen(process.env.PORT || PEER_PORT, () => {
   console.log(`listening at localhost:${PORT}`)
   if (PORT !== DEFAULT_PORT) {
     syncWithRootState();
