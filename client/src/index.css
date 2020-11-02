@@ -35,6 +35,9 @@ body {
   padding: 2%
 }
 
+.conductTransaction {
+  margin: 10%
+}
 a, a:hover {
   color: #e66;
   text-decoration: underline;
