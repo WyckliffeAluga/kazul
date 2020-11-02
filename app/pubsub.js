@@ -12,8 +12,8 @@ class PubSub {
     this.blockchain  = blockchain;
     this.transactionPool = transactionPool;
 
-    this.publisher = redis.createClient();
-    this.subscriber = redis.createClient();
+    this.publisher = redis.createClient(redisUrl);
+    this.subscriber = redis.createClient(redisUrl);
 
     this.subscribeToChannels();
 
